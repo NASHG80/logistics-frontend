@@ -1,0 +1,190 @@
+/* ==================== RESPONSIVE UTILITIES ==================== */
+
+/* Container Utilities */
+.responsive-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.responsive-section {
+  @apply py-8 sm:py-12 lg:py-16;
+}
+
+/* Grid Utilities */
+.responsive-grid-2 {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6;
+}
+
+.responsive-grid-3 {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6;
+}
+
+.responsive-grid-4 {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6;
+}
+
+/* Card Utilities */
+.responsive-card {
+  @apply rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8;
+}
+
+.responsive-card-sm {
+  @apply rounded-lg sm:rounded-xl p-3 sm:p-4 lg:p-6;
+}
+
+/* Typography */
+.responsive-heading-xl {
+  @apply text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold;
+}
+
+.responsive-heading-lg {
+  @apply text-xl sm:text-2xl lg:text-3xl font-bold;
+}
+
+.responsive-heading-md {
+  @apply text-lg sm:text-xl lg:text-2xl font-bold;
+}
+
+.responsive-text {
+  @apply text-sm sm:text-base;
+}
+
+/* Button Utilities */
+.responsive-button {
+  @apply px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base;
+}
+
+.responsive-button-sm {
+  @apply px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm;
+}
+
+/* Table Utilities */
+.responsive-table-container {
+  @apply overflow-x-auto -mx-4 sm:mx-0;
+}
+
+.responsive-table {
+  @apply min-w-full w-full;
+}
+
+.responsive-table th,
+.responsive-table td {
+  @apply px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm;
+}
+
+/* Spacing Utilities */
+.responsive-gap {
+  @apply gap-3 sm:gap-4 lg:gap-6;
+}
+
+.responsive-gap-sm {
+  @apply gap-2 sm:gap-3 lg:gap-4;
+}
+
+/* Modal/Dialog */
+.responsive-modal {
+  @apply w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl mx-4;
+}
+
+.responsive-modal-lg {
+  @apply w-full max-w-md sm:max-w-lg lg:max-w-2xl xl:max-w-4xl mx-4;
+}
+
+/* Form Utilities */
+.responsive-form-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6;
+}
+
+.responsive-input {
+  @apply px-3 py-2 sm:px-4 sm:py-3 text-sm sm:text-base;
+}
+
+/* Flex Utilities */
+.responsive-flex-col {
+  @apply flex flex-col sm:flex-row;
+}
+
+.responsive-flex-col-reverse {
+  @apply flex flex-col-reverse sm:flex-row;
+}
+
+/* Hide/Show Utilities */
+.mobile-only {
+  @apply block sm:hidden;
+}
+
+.desktop-only {
+  @apply hidden sm:block;
+}
+
+.tablet-up {
+  @apply hidden md:block;
+}
+
+.mobile-tablet {
+  @apply block lg:hidden;
+}
+
+/* Sidebar/Navigation */
+.responsive-sidebar {
+  @apply w-full md:w-64 lg:w-72;
+}
+
+/* Image Utilities */
+.responsive-image {
+  @apply w-full h-auto;
+}
+
+.responsive-avatar {
+  @apply w-8 h-8 sm:w-10 sm:h-10;
+}
+
+.responsive-avatar-lg {
+  @apply w-12 h-12 sm:w-16 sm:h-16;
+}
+
+/* Status Badge */
+.responsive-badge {
+  @apply px-2 py-1 sm:px-3 sm:py-1.5 text-xs sm:text-sm;
+}
+
+/* Icon Sizing */
+.responsive-icon-sm {
+  @apply w-4 h-4 sm:w-5 sm:h-5;
+}
+
+.responsive-icon {
+  @apply w-5 h-5 sm:w-6 sm:h-6;
+}
+
+.responsive-icon-lg {
+  @apply w-6 h-6 sm:w-8 sm:h-8;
+}
+
+/* Dashboard Stats Card */
+.stat-card-responsive {
+  @apply p-4 sm:p-6 rounded-xl sm:rounded-2xl;
+}
+
+/* Chart Container */
+.chart-container-responsive {
+  @apply h-48 sm:h-64 lg:h-80;
+}
+
+/* Overflow Handling */
+.responsive-overflow {
+  @apply overflow-x-auto;
+}
+
+/* Padding Adjustments */
+.responsive-px {
+  @apply px-4 sm:px-6 lg:px-8;
+}
+
+.responsive-py {
+  @apply py-4 sm:py-6 lg:py-8;
+}
+
+/* Max Width Utilities */
+.responsive-max-w {
+  @apply max-w-full sm:max-w-xl lg:max-w-3xl xl:max-w-5xl;
+}
