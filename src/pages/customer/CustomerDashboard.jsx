@@ -10,7 +10,8 @@ import { shipmentAPI, epodAPI } from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 
 /* ================= SOCKET ================= */
-const socket = io("http://localhost:5000");
+const SOCKET_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+const socket = io(SOCKET_URL);
 
 
 export default function CustomerDashboard() {
@@ -72,7 +73,8 @@ export default function CustomerDashboard() {
     const fetchCustomerProfile = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch("http://localhost:5000/api/auth/me", {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            const response = await fetch(`${API_URL}/auth/me`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
@@ -102,7 +104,8 @@ export default function CustomerDashboard() {
             console.log('👤 Customer Profile:', customerProfile);
             console.log('📝 Customer Name being sent:', requestData.customerName);
 
-            const response = await fetch("http://localhost:5000/api/delivery-requests", {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            const response = await fetch(`${API_URL}/delivery-requests`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

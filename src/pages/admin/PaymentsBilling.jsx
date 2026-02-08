@@ -166,7 +166,7 @@ export default function PaymentsBilling() {
       try {
         const token = localStorage.getItem("token");
         const queryParams = new URLSearchParams();
-        
+
         if (statusFilter) {
           queryParams.append('status', statusFilter);
         }
@@ -174,8 +174,9 @@ export default function PaymentsBilling() {
           queryParams.append('search', search);
         }
 
-        const url = `http://localhost:5000/api/invoices${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
-        
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+        const url = `${API_URL}/invoices${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+
         const response = await fetch(url, {
           headers: {
             "Authorization": `Bearer ${token}`

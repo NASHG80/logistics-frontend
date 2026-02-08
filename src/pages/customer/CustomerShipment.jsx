@@ -20,7 +20,8 @@ import { vehicleAPI } from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 
 /* ================= SOCKET ================= */
-const socket = io("http://localhost:5000");
+const SOCKET_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+const socket = io(SOCKET_URL);
 
 /* ================= CONSTANTS ================= */
 const REFRESH_INTERVAL = 5000; // 5 seconds
@@ -175,7 +176,7 @@ export default function CustomerShipment() {
       console.log('🔍 Fetching active vehicles for customer...');
       const response = await vehicleAPI.getActiveVehicles();
       console.log('📡 API Response:', response);
-      
+
       if (response.success) {
         // Backend already filters based on user role
         // For customers, it returns only vehicles carrying their shipments
@@ -184,17 +185,17 @@ export default function CustomerShipment() {
           const shipmentStatus = v.shipmentDetails?.status;
           return shipmentStatus !== 'DELIVERED' && shipmentStatus !== 'COMPLETED';
         });
-        
+
         console.log('📦 All fetched vehicles:', response.data);
         console.log('📊 Total vehicle count:', response.data.length);
         console.log('🚚 Active (non-delivered) count:', activeVehicles.length);
-        
+
         if (activeVehicles.length > 0) {
           console.log('🚚 First active vehicle:', activeVehicles[0]);
         } else {
           console.warn('⚠️ No active vehicles (all delivered or none available)');
         }
-        
+
         setVehicleTrackingData(activeVehicles);
         setError(null);
       } else {
@@ -226,7 +227,7 @@ export default function CustomerShipment() {
   /* ================= LISTEN FOR REAL-TIME LOCATION UPDATES ================= */
   useEffect(() => {
     console.log('🔌 Customer socket listener initialized');
-    
+
     // Listen for location updates from drivers
     socket.on('location-update', (data) => {
       console.log('📍 Customer received location update:', data);
@@ -262,20 +263,20 @@ export default function CustomerShipment() {
         ...prev,
         [data.shipmentId]: [...(prev[data.shipmentId] || []), newPoint]
       }));
-      
+
       console.log('🚚 Truck position updated to:', newPoint);
     });
 
     // Listen for shipment status updates (when driver ends trip)
     socket.on('shipment-status-updated', (data) => {
       console.log('📢 Customer received status update:', data);
-      
+
       // If shipment is delivered or completed, remove it from the list
       if (data.status === 'DELIVERED' || data.status === 'COMPLETED') {
         console.log('🎯 Removing delivered vehicle from list:', data.shipmentId);
-        setVehicleTrackingData(prev => 
-          prev.filter(v => 
-            v.shipmentId !== data.shipmentId && 
+        setVehicleTrackingData(prev =>
+          prev.filter(v =>
+            v.shipmentId !== data.shipmentId &&
             v.shipmentId !== data.referenceId
           )
         );

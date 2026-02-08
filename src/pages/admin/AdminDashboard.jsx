@@ -220,9 +220,9 @@ export default function AdminDashboard() {
     useEffect(() => {
         if (location.state?.scrollToRequests && pendingRequestsRef.current) {
             setTimeout(() => {
-                pendingRequestsRef.current?.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
+                pendingRequestsRef.current?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
                 });
             }, 100);
         }
@@ -230,7 +230,8 @@ export default function AdminDashboard() {
 
     // Socket.IO for real-time updates
     useEffect(() => {
-        const socket = io("http://localhost:5000");
+        const SOCKET_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+        const socket = io(SOCKET_URL);
 
         socket.on("delivery-request-created", () => {
             fetchPendingRequests();
@@ -252,7 +253,8 @@ export default function AdminDashboard() {
     const fetchPendingRequests = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch("http://localhost:5000/api/delivery-requests/pending", {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            const response = await fetch(`${API_URL}/delivery-requests/pending`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
@@ -269,7 +271,8 @@ export default function AdminDashboard() {
     const fetchShipmentStats = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch("http://localhost:5000/api/shipments/stats", {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            const response = await fetch(`${API_URL}/shipments/stats`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
@@ -286,7 +289,8 @@ export default function AdminDashboard() {
     const fetchVehicleStats = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch("http://localhost:5000/api/vehicles/stats", {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            const response = await fetch(`${API_URL}/vehicles/stats`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
@@ -303,7 +307,8 @@ export default function AdminDashboard() {
     const fetchPendingPayments = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch("http://localhost:5000/api/invoices?status=PENDING", {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            const response = await fetch(`${API_URL}/invoices?status=PENDING`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
@@ -322,7 +327,8 @@ export default function AdminDashboard() {
     const fetchSupportTickets = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch("http://localhost:5000/api/support?status=OPEN", {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            const response = await fetch(`${API_URL}/support?status=OPEN`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
@@ -339,41 +345,40 @@ export default function AdminDashboard() {
 
     const handleApprove = async (requestId) => {
         notify.confirm("Are you sure you want to approve this delivery request? This will create a new shipment.", async () => {
-
-
-        setProcessingRequest(requestId);
-        try {
-            const token = localStorage.getItem("token");
-            const response = await fetch(`http://localhost:5000/api/delivery-requests/${requestId}/approve`, {
-                method: "PUT",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            });
-            const data = await response.json();
-
-            if (data.success) {
-                toast.success("Request approved! Shipment created successfully.", {
-                    duration: 4000,
-                    position: "top-center",
-                    style: {
-                        background: "#10b981",
-                        color: "#fff",
-                        fontWeight: "600"
+            setProcessingRequest(requestId);
+            try {
+                const token = localStorage.getItem("token");
+                const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+                const response = await fetch(`${API_URL}/delivery-requests/${requestId}/approve`, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
                     }
                 });
-                fetchPendingRequests();
-            } else {
-                throw new Error(data.message);
+                const data = await response.json();
+
+                if (data.success) {
+                    toast.success("Request approved! Shipment created successfully.", {
+                        duration: 4000,
+                        position: "top-center",
+                        style: {
+                            background: "#10b981",
+                            color: "#fff",
+                            fontWeight: "600"
+                        }
+                    });
+                    fetchPendingRequests();
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                toast.error(error.message || "Failed to approve request", {
+                    duration: 4000,
+                    position: "top-center"
+                });
+            } finally {
+                setProcessingRequest(null);
             }
-        } catch (error) {
-            toast.error(error.message || "Failed to approve request", {
-                duration: 4000,
-                position: "top-center"
-            });
-        } finally {
-            setProcessingRequest(null);
-        }
         });
     };
 
@@ -384,7 +389,8 @@ export default function AdminDashboard() {
         setProcessingRequest(requestId);
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`http://localhost:5000/api/delivery-requests/${requestId}/reject`, {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            const response = await fetch(`${API_URL}/delivery-requests/${requestId}/reject`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

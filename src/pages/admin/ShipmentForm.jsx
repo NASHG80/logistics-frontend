@@ -162,7 +162,8 @@ export default function ShipmentForm() {
         if (form.requestId) {
           try {
             const token = localStorage.getItem("token");
-            await fetch(`http://localhost:5000/api/delivery-requests/${form.requestId}/approve`, {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            await fetch(`${API_URL}/delivery-requests/${form.requestId}/approve`, {
               method: "PUT",
               headers: {
                 "Authorization": `Bearer ${token}`

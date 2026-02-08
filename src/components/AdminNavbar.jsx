@@ -33,7 +33,8 @@ export default function AdminNavbar() {
 
     // Socket.IO for real-time updates
     useEffect(() => {
-        const socket = io("http://localhost:5000");
+        const SOCKET_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+        const socket = io(SOCKET_URL);
 
         socket.on("delivery-request-created", (data) => {
             console.log("New delivery request:", data);
@@ -53,7 +54,8 @@ export default function AdminNavbar() {
     const fetchPendingRequests = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch("http://localhost:5000/api/delivery-requests/pending", {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+            const response = await fetch(`${API_URL}/delivery-requests/pending`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }

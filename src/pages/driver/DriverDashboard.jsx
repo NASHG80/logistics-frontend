@@ -22,7 +22,8 @@ import notify from "../../utils/notify";
 import { Toaster } from "react-hot-toast";
 
 /* ================= SOCKET ================= */
-const socket = io("http://localhost:5000");
+const SOCKET_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+const socket = io(SOCKET_URL);
 
 /* ================= ANIMATION VARIANTS ================= */
 const containerVariants = {
@@ -98,8 +99,9 @@ const DriverDashboard = () => {
       setLoading(true);
       setError("");
 
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       const token = localStorage.getItem("token");
-      const profileResponse = await fetch("http://localhost:5000/api/auth/me", {
+      const profileResponse = await fetch(`${API_URL}/auth/me`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       const profileData = await profileResponse.json();
@@ -152,8 +154,9 @@ const DriverDashboard = () => {
   const fetchCompletedShipments = async () => {
     try {
       // Get current driver's profile
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       const token = localStorage.getItem("token");
-      const profileResponse = await fetch("http://localhost:5000/api/auth/me", {
+      const profileResponse = await fetch(`${API_URL}/auth/me`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -244,11 +247,11 @@ const DriverDashboard = () => {
       const numericDistance = parseFloat(distance.replace(/[^\d.]/g, '')) || 0;
       return sum + numericDistance;
     }, 0).toFixed(0) + ' km',
-    onTimeDeliveries: completedShipments.length > 0 
+    onTimeDeliveries: completedShipments.length > 0
       ? Math.round((completedShipments.filter(s => {
-          if (!s.eta || !s.deliveredAt) return true;
-          return new Date(s.deliveredAt) <= new Date(s.eta);
-        }).length / completedShipments.length) * 100) + '%'
+        if (!s.eta || !s.deliveredAt) return true;
+        return new Date(s.deliveredAt) <= new Date(s.eta);
+      }).length / completedShipments.length) * 100) + '%'
       : '100%',
   };
 
@@ -517,8 +520,8 @@ const DriverDashboard = () => {
                   onClick={isTripActive ? handleEndTrip : handleStartTrip}
                   disabled={!shipmentData}
                   className={`w-full group flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all shadow-lg ${isTripActive
-                      ? "bg-gradient-to-r from-red-500 to-rose-600 text-white hover:from-red-600 hover:to-rose-700 shadow-red-500/30"
-                      : "bg-gradient-to-r from-emerald-500 to-green-600 text-white hover:from-emerald-600 hover:to-green-700 shadow-emerald-500/30"
+                    ? "bg-gradient-to-r from-red-500 to-rose-600 text-white hover:from-red-600 hover:to-rose-700 shadow-red-500/30"
+                    : "bg-gradient-to-r from-emerald-500 to-green-600 text-white hover:from-emerald-600 hover:to-green-700 shadow-emerald-500/30"
                     } disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.01]`}
                 >
                   {isTripActive ? (

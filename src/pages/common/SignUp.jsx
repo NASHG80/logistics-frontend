@@ -16,6 +16,9 @@ const Signup = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // API URL from environment variable
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -45,7 +48,7 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/signup", {
+      const response = await fetch(`${API_URL}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -156,8 +159,8 @@ const Signup = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       className={`relative py-3 rounded-xl text-sm font-semibold border-2 transition-all ${role === r.value
-                          ? "bg-gradient-to-br from-[#c6ac8f] to-[#a08060] text-white border-[#c6ac8f] shadow-lg shadow-[#c6ac8f]/30"
-                          : "bg-white text-gray-700 border-gray-200 hover:border-[#c6ac8f]"
+                        ? "bg-gradient-to-br from-[#c6ac8f] to-[#a08060] text-white border-[#c6ac8f] shadow-lg shadow-[#c6ac8f]/30"
+                        : "bg-white text-gray-700 border-gray-200 hover:border-[#c6ac8f]"
                         }`}
                     >
                       <div className="flex flex-col items-center gap-1">

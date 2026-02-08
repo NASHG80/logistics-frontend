@@ -27,23 +27,23 @@ const fadeInUp = {
 /* ---------------- BADGES ---------------- */
 const StatusBadge = ({ status }) => {
   const config = {
-    PAID: { 
-      bg: "bg-emerald-100", 
-      text: "text-emerald-700", 
+    PAID: {
+      bg: "bg-emerald-100",
+      text: "text-emerald-700",
       border: "border-emerald-200",
       icon: FiCheckCircle,
       iconColor: "text-emerald-600"
     },
-    PENDING: { 
-      bg: "bg-amber-100", 
-      text: "text-amber-700", 
+    PENDING: {
+      bg: "bg-amber-100",
+      text: "text-amber-700",
       border: "border-amber-200",
       icon: FiClock,
       iconColor: "text-amber-600"
     },
-    FAILED: { 
-      bg: "bg-red-100", 
-      text: "text-red-700", 
+    FAILED: {
+      bg: "bg-red-100",
+      text: "text-red-700",
       border: "border-red-200",
       icon: FiClock,
       iconColor: "text-red-600"
@@ -79,13 +79,14 @@ export default function InvoiceDetail() {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:5000/api/invoices/${id}`, {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${API_URL}/invoices/${id}`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
       });
       const data = await response.json();
-      
+
       if (data.success) {
         setInvoice(data.data);
       } else {
@@ -209,14 +210,14 @@ export default function InvoiceDetail() {
     // Create a Blob from the HTML content
     const blob = new Blob([invoiceHTML], { type: 'text/html' });
     const url = window.URL.createObjectURL(blob);
-    
+
     // Create a temporary link and trigger download
     const link = document.createElement('a');
     link.href = url;
     link.download = `Invoice_${invoice.invoiceId}_${new Date().toISOString().split('T')[0]}.html`;
     document.body.appendChild(link);
     link.click();
-    
+
     // Cleanup
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);

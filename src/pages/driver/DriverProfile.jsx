@@ -32,8 +32,9 @@ const DriverProfile = () => {
       try {
         setLoading(true);
         // Get current driver's profile
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
         const token = localStorage.getItem("token");
-        const profileResponse = await fetch("http://localhost:5000/api/auth/me", {
+        const profileResponse = await fetch(`${API_URL}/auth/me`, {
           headers: {
             "Authorization": `Bearer ${token}`
           }
@@ -77,11 +78,11 @@ const DriverProfile = () => {
       const today = new Date();
       return deliveredDate.toDateString() === today.toDateString();
     }).length,
-    onTimeRate: completedShipments.length > 0 
+    onTimeRate: completedShipments.length > 0
       ? Math.round((completedShipments.filter(s => {
-          if (!s.eta || !s.deliveredAt) return true;
-          return new Date(s.deliveredAt) <= new Date(s.eta);
-        }).length / completedShipments.length) * 100) + '%'
+        if (!s.eta || !s.deliveredAt) return true;
+        return new Date(s.deliveredAt) <= new Date(s.eta);
+      }).length / completedShipments.length) * 100) + '%'
       : '100%',
     totalDistance: completedShipments.reduce((sum, s) => {
       const distance = s.routeMetadata?.distance || '0 km';
@@ -107,7 +108,7 @@ const DriverProfile = () => {
       <Toaster />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 pt-24 pb-16 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto space-y-8">
-          
+
           {/* Header Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -137,7 +138,7 @@ const DriverProfile = () => {
 
               {/* Logout Button - Desktop */}
               <div className="hidden md:block">
-                <motion.button 
+                <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={handleLogout}
@@ -215,7 +216,7 @@ const DriverProfile = () => {
 
           {/* Information Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
+
             {/* Personal Information */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -313,7 +314,7 @@ const DriverProfile = () => {
 
           {/* Mobile Logout Button */}
           <div className="md:hidden">
-            <motion.button 
+            <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={handleLogout}
               className="w-full flex items-center justify-center gap-3 px-6 py-5 rounded-2xl bg-gradient-to-r from-red-600 to-red-500 text-white font-bold shadow-xl hover:shadow-2xl hover:from-red-700 hover:to-red-600 transition-all duration-200"
